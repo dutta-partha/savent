@@ -1,0 +1,2417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAVENT: Trustworthy AI-Enabled Intent-Driven Network Configuration | DBA Research Showcase</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- KaTeX for LaTeX Math Rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ggu: {
+              navy: '#0B1E3B',
+              blue: '#163866',
+              lightNavy: '#1E293B',
+              gold: '#C5A059',
+              goldHover: '#B38E46',
+              amber: '#D97706',
+              accent: '#38BDF8'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Cinzel', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Prevent top scrollbar and page horizontal overflow */
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #C5A059;
+    }
+    .custom-gradient-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .gold-glow {
+      box-shadow: 0 0 25px -5px rgba(197, 160, 89, 0.25);
+    }
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col selection:bg-ggu-gold selection:text-slate-950">
+
+  <header class="sticky top-0 z-50 bg-ggu-navy/95 border-b border-ggu-gold/30 backdrop-blur-md transition-all duration-300 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- University & Proposal Identity -->
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-ggu-gold to-yellow-600 flex items-center justify-center font-serif text-slate-950 font-black text-xl shadow-md border border-yellow-200">
+            GGU
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs uppercase tracking-widest font-semibold px-2 py-0.5 rounded bg-ggu-gold/20 text-ggu-gold border border-ggu-gold/30">
+                DBA Research Proposal
+              </span>
+              <span class="text-xs text-slate-400 hidden sm:inline-block">Golden Gate University Worldwide</span>
+            </div>
+            <h1 class="text-lg sm:text-xl font-bold text-white tracking-tight flex items-center gap-2">
+              SAVENT <span class="text-xs sm:text-sm font-normal text-slate-300 hidden md:inline">| Trustworthy AI Network Configuration</span>
+            </h1>
+          </div>
+        </div>
+
+        <!-- Academic Metadata Pills & Actions -->
+        <div class="flex items-center space-x-3">
+          <a href="#simulator" onclick="switchTab('simulator')" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-ggu-gold to-yellow-600 hover:from-ggu-goldHover hover:to-yellow-700 text-slate-950 text-xs font-bold flex items-center gap-1.5 shadow-md transition duration-200">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+            <span>Test SAVENT Pipeline</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Clean wrapping layout, no top scrollbar) -->
+      <nav class="flex flex-wrap items-center gap-1.5 sm:gap-2 pb-2 pt-1 border-t border-slate-800/80 text-xs sm:text-sm font-medium">
+        <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn active px-3 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="book-open" class="w-4 h-4"></i> Overview & Context
+        </button>
+        <button onclick="switchTab('architecture')" id="tab-architecture" class="tab-btn px-3 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="network" class="w-4 h-4"></i> Architecture & DSR
+        </button>
+        <button onclick="switchTab('simulator')" id="tab-simulator" class="tab-btn px-3 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="terminal" class="w-4 h-4 text-emerald-400"></i> Interactive Pipeline Simulator
+        </button>
+        <button onclick="switchTab('traceability')" id="tab-traceability" class="tab-btn px-3 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="table-2" class="w-4 h-4"></i> Traceability Matrix (RO/RQ/H)
+        </button>
+        <button onclick="switchTab('metrics')" id="tab-metrics" class="tab-btn px-3 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="calculator" class="w-4 h-4"></i> Metrics & Statistical Protocol
+        </button>
+        <button onclick="switchTab('experteval')" id="tab-experteval" class="tab-btn px-3 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="clipboard-check" class="w-4 h-4 text-ggu-gold"></i> Appendix C: Expert Instrument
+        </button>
+        <button onclick="switchTab('literature')" id="tab-literature" class="tab-btn px-3 py-1.5 rounded-md text-slate-300 hover:text-white hover:bg-slate-800/60 transition flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="library" class="w-4 h-4"></i> Literature Synthesis (Appx A)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: OVERVIEW & RESEARCH MOTIVATION      -->
+    <!-- ========================================== -->
+    <section id="content-overview" class="tab-content space-y-10 block">
+      
+      <!-- Hero Header -->
+      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-ggu-navy via-slate-900 to-slate-900 p-8 sm:p-10 border border-ggu-gold/40 shadow-2xl">
+        <div class="absolute -right-10 -bottom-10 w-96 h-96 bg-ggu-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 max-w-4xl space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/90 border border-slate-700 text-xs font-semibold text-slate-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Doctor of Business Administration (DBA) in Emerging Technologies • Generative AI Focus
+          </div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            Towards Trustworthy AI-Enabled Intent-Driven Configuration for Enterprise Networks
+          </h2>
+          <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+            Investigating whether treating <strong class="text-ggu-gold">RFC 7950 YANG schemas as structured semantic knowledge</strong> rather than flat textual context eliminates configuration hallucinations, preserves hierarchical constraints, and achieves verified pre-deployment enterprise network trustworthiness.
+          </p>
+          <div class="pt-4 flex flex-wrap gap-4 text-xs sm:text-sm text-slate-300 border-t border-slate-800">
+            <div><span class="text-slate-400">Degree Program:</span> <strong class="text-white">Doctor of Business Administration (DBA)</strong></div>
+            <div><span class="text-slate-400">Institution:</span> <strong class="text-white">Golden Gate University Worldwide</strong></div>
+            <div><span class="text-slate-400">Concentration:</span> <strong class="text-white">Emerging Technologies &amp; Generative AI</strong></div>
+            <div><span class="text-slate-400">Methodology:</span> <strong class="text-ggu-gold">Design Science Research (DSRM)</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Core Economic & Operational Drivers (Stats Grid) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="custom-gradient-card rounded-xl p-6 border-l-4 border-l-rose-500">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs uppercase font-bold tracking-wider text-rose-400">Unplanned Downtime Cost</span>
+            <i data-lucide="dollar-sign" class="w-5 h-5 text-rose-400"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-white tracking-tight">$23,750 / min</div>
+          <p class="text-xs text-slate-300 mt-2">
+            Average financial impact of enterprise network outages during configuration change incidents (Blau, 2024).
+          </p>
+        </div>
+
+        <div class="custom-gradient-card rounded-xl p-6 border-l-4 border-l-amber-500">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs uppercase font-bold tracking-wider text-amber-400">Outage Attribution</span>
+            <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-white tracking-tight">23% Human/Config</div>
+          <p class="text-xs text-slate-300 mt-2">
+            IT and network outages driven by manual misconfigurations and change management complexity (Uptime Institute, 2025). Exploitable errors risk up to 9% revenue.
+          </p>
+        </div>
+
+        <div class="custom-gradient-card rounded-xl p-6 border-l-4 border-l-emerald-500">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs uppercase font-bold tracking-wider text-emerald-400">IBN Market Opportunity</span>
+            <i data-lucide="trending-up" class="w-5 h-5 text-emerald-400"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-white tracking-tight">$23.39 Billion</div>
+          <p class="text-xs text-slate-300 mt-2">
+            Projected Intent-Based Networking market valuation by 2034, expanding at 24.5% CAGR from $4.06B in 2026 (Fortune Business Insights).
+          </p>
+        </div>
+      </div>
+
+      <!-- Figure 1: Evolution of Enterprise Networking Interactive Timeline -->
+      <div class="custom-gradient-card rounded-2xl p-6 sm:p-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-6 border-b border-slate-800">
+          <div>
+            <span class="text-xs font-bold text-ggu-gold uppercase tracking-wider">Figure 1 in Dissertation</span>
+            <h3 class="text-xl font-bold text-white">Evolution of Enterprise Networking Paradigms</h3>
+          </div>
+          <span class="text-xs text-slate-300 mt-2 sm:mt-0 px-3 py-1 bg-slate-800 rounded-full border border-slate-700">
+            1990 &rarr; 2025+ Horizon
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+          <!-- Phase 1 -->
+          <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 hover:border-slate-600 transition flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-slate-300">1990 – 2005</div>
+              <h4 class="font-bold text-white text-base mt-1">Traditional CLI</h4>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Manual CLI syntax, device-centric configurations, vendor-locked scripts, high risk of manual human error.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 font-mono">
+              Static • Box-by-Box
+            </div>
+          </div>
+
+          <!-- Phase 2 -->
+          <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 hover:border-slate-600 transition flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-slate-300">2005 – 2015</div>
+              <h4 class="font-bold text-white text-base mt-1">SDN Era</h4>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Software-Defined Networking: Centralized control plane, OpenFlow, programmable REST APIs, controller fabrics.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 font-mono">
+              Centralized APIs
+            </div>
+          </div>
+
+          <!-- Phase 3 -->
+          <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 hover:border-slate-600 transition flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-slate-300">2015 – 2020</div>
+              <h4 class="font-bold text-white text-base mt-1">Intent-Based</h4>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                High-level business intent declarations, policy compilers, automated activation, and closed-loop telemetry assurance.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 font-mono">
+              Policy & Closed Loops
+            </div>
+          </div>
+
+          <!-- Phase 4 -->
+          <div class="bg-slate-900/90 rounded-xl p-4 border border-slate-800 hover:border-slate-600 transition flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-mono font-bold text-slate-300">2020 – 2024</div>
+              <h4 class="font-bold text-white text-base mt-1">AI-Assisted NetOps</h4>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Large Language Models, copilot coding, natural language prompt translation, but frequent syntax/semantic hallucinations.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 font-mono">
+              LLMs • Fragile Trust
+            </div>
+          </div>
+
+          <!-- Phase 5 - SAVENT -->
+          <div class="bg-gradient-to-b from-ggu-navy to-slate-900 rounded-xl p-4 border-2 border-ggu-gold shadow-lg flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-ggu-gold text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-bl">
+              SAVENT
+            </div>
+            <div>
+              <div class="text-xs font-mono font-bold text-ggu-gold">2025+ Horizon</div>
+              <h4 class="font-bold text-white text-base mt-1">Trustworthy AI</h4>
+              <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+                Schema-aware retrieval (CUA), strict YANG constraint grounding, deterministic pre-deployment validation, and expert HITL governance.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-ggu-gold/30 text-[11px] text-ggu-gold font-mono font-bold">
+              RFC 7950 Verified
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem Statement & Research Gap Deep Dive -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- The Core Dilemma -->
+        <div class="custom-gradient-card rounded-2xl p-6 sm:p-7 space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="p-2.5 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20">
+              <i data-lucide="shield-alert" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white">The Core Problem: Fragile AI Ingestion</h3>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Existing generative AI models can generate network syntax from natural language intents, but they treat <strong class="text-slate-100">YANG data models as flat text</strong>. YANG schemas are deeply hierarchical with rich relational constraints (<code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-amber-300">leafref</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-amber-300">must</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-amber-300">when</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-amber-300">choice/case</code>).
+          </p>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Standard RAG workflows dump excessive schema context into the context window, causing:
+          </p>
+          <ul class="text-xs space-y-2 text-slate-300 pl-4 border-l-2 border-rose-500/50">
+            <li><span class="text-rose-400 font-semibold">• Configuration Hallucinations:</span> Fabricating non-existent YANG leaves and container paths.</li>
+            <li><span class="text-rose-400 font-semibold">• Context Bloat & Waste:</span> Consuming tens of thousands of tokens per simple ACL/VLAN configuration.</li>
+            <li><span class="text-rose-400 font-semibold">• Semantic Incoherence:</span> Omitting prerequisite nodes mandated by OpenConfig semantics.</li>
+            <li><span class="text-rose-400 font-semibold">• Lack of Pre-Deployment Assurance:</span> Post-deployment monitoring fails to catch invalid push payloads before live outages occur.</li>
+          </ul>
+        </div>
+
+        <!-- The SAVENT Solution -->
+        <div class="custom-gradient-card rounded-2xl p-6 sm:p-7 space-y-4 border border-ggu-gold/30">
+          <div class="flex items-center space-x-3">
+            <div class="p-2.5 rounded-lg bg-ggu-gold/10 text-ggu-gold border border-ggu-gold/20">
+              <i data-lucide="layers" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white">The SAVENT Proposition</h3>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            SAVENT (<strong class="text-white">Schema-Aware Verified Framework for Enterprise Network Configuration</strong>) introduces an end-to-end Design Science artifact bridging 4 previously isolated research streams:
+          </p>
+          <div class="grid grid-cols-2 gap-3 pt-2">
+            <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+              <span class="text-xs font-bold text-emerald-400">1. CUA Compression</span>
+              <p class="text-[11px] text-slate-400 mt-1">Closest Unique Ancestor path pruning minimizes prompt tokens while preserving hierarchy.</p>
+            </div>
+            <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+              <span class="text-xs font-bold text-emerald-400">2. Schema Hints</span>
+              <p class="text-[11px] text-slate-400 mt-1">Provides concise type, leafref, and value constraints directly to guided decoders.</p>
+            </div>
+            <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+              <span class="text-xs font-bold text-emerald-400">3. YANG-IR Bridge</span>
+              <p class="text-[11px] text-slate-400 mt-1">Compact intermediate representation deterministically compiled to standard OpenConfig JSON/XML.</p>
+            </div>
+            <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+              <span class="text-xs font-bold text-emerald-400">4. libyang Validation</span>
+              <p class="text-[11px] text-slate-400 mt-1">Formal <code class="text-[10px] text-amber-300">yanglint</code> schema verification with an automated error-regeneration feedback loop.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: ARCHITECTURE & DSR PROCESS          -->
+    <!-- ========================================== -->
+    <section id="content-architecture" class="tab-content space-y-10 hidden">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-ggu-gold uppercase tracking-wider">System Architecture & Design Science</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">The SAVENT Pipeline & DSR Process</h2>
+        </div>
+        <div class="mt-2 sm:mt-0 text-xs text-slate-400">
+          Operationalizing Peffers et al. (2007) DSRM
+        </div>
+      </div>
+
+      <!-- Figure 4: Architecture Flow Diagram -->
+      <div class="custom-gradient-card rounded-2xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <i data-lucide="git-merge" class="w-5 h-5 text-ggu-gold"></i>
+            Architectural Pipeline (Figure 4 in Proposal)
+          </h3>
+          <span class="text-xs bg-slate-800 px-3 py-1 rounded text-slate-300 border border-slate-700">Pre-Deployment Verification Flow</span>
+        </div>
+
+        <!-- Pipeline Steps Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-3 relative">
+          <!-- Step 1 -->
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 relative hover:border-ggu-gold transition">
+            <div class="w-7 h-7 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs mb-2">1</div>
+            <h4 class="text-xs font-bold text-white">Input Intent</h4>
+            <p class="text-[11px] text-slate-400 mt-1 leading-normal">
+              High-level natural language policy from network operator or ticket.
+            </p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 relative hover:border-ggu-gold transition">
+            <div class="w-7 h-7 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs mb-2">2</div>
+            <h4 class="text-xs font-bold text-white">Intent Interpretation</h4>
+            <p class="text-[11px] text-slate-400 mt-1 leading-normal">
+              Extracts target domains (e.g., VLAN, BGP, ACL, Interface) and parameters.
+            </p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-ggu-gold/60 relative hover:border-ggu-gold transition bg-ggu-navy/40">
+            <div class="w-7 h-7 rounded-full bg-ggu-gold/20 text-ggu-gold flex items-center justify-center font-bold text-xs mb-2">3</div>
+            <h4 class="text-xs font-bold text-white">Schema-Aware Retrieval</h4>
+            <p class="text-[11px] text-slate-300 mt-1 leading-normal">
+              Queries OpenConfig repository; computes CUA path compression & hints.
+            </p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 relative hover:border-ggu-gold transition">
+            <div class="w-7 h-7 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs mb-2">4</div>
+            <h4 class="text-xs font-bold text-white">AI Generation</h4>
+            <p class="text-[11px] text-slate-400 mt-1 leading-normal">
+              Grounded LLM/SLM decodes intent into compact YANG Intermediate Rep (YANG-IR).
+            </p>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 relative hover:border-ggu-gold transition">
+            <div class="w-7 h-7 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs mb-2">5</div>
+            <h4 class="text-xs font-bold text-white">Deterministic Transform</h4>
+            <p class="text-[11px] text-slate-400 mt-1 leading-normal">
+              Expands compressed paths into full OpenConfig RFC 7951 JSON payloads.
+            </p>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-emerald-500/60 relative hover:border-emerald-400 transition bg-emerald-950/20">
+            <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs mb-2">6</div>
+            <h4 class="text-xs font-bold text-white">Validation Engine</h4>
+            <p class="text-[11px] text-slate-300 mt-1 leading-normal">
+              Automated <code class="text-[10px] text-amber-300">yanglint</code> verification against target schema; feedback loop if error.
+            </p>
+          </div>
+        </div>
+
+        <!-- Feedback & Expert Evaluation Subsystems -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800">
+          <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex items-start space-x-3">
+            <i data-lucide="refresh-cw" class="w-5 h-5 text-amber-400 shrink-0 mt-0.5"></i>
+            <div>
+              <h5 class="text-xs font-bold text-white uppercase tracking-wider">Iterative Regeneration Loop</h5>
+              <p class="text-xs text-slate-400 mt-1">
+                If <code class="text-amber-300">yanglint</code> emits constraint violations (leafref missing, enum mismatch), the validation error log is injected into the AI Generator prompt for deterministic self-correction (predefined retry budget).
+              </p>
+            </div>
+          </div>
+          <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800 flex items-start space-x-3">
+            <i data-lucide="user-check" class="w-5 h-5 text-ggu-gold shrink-0 mt-0.5"></i>
+            <div>
+              <h5 class="text-xs font-bold text-white uppercase tracking-wider">Dual-Track DSR Evaluation</h5>
+              <p class="text-xs text-slate-400 mt-1">
+                Outputs undergo quantitative metric scoring (<strong class="text-slate-200">SVR, IAS, CHR, RSCS</strong>) combined with blinded practitioner evaluation (<strong class="text-slate-200">Appendix C</strong>) assessing operational utility.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DSRM 6-Stage Process (Figure 6) -->
+      <div class="custom-gradient-card rounded-2xl p-6 sm:p-8 space-y-6">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+          <div>
+            <span class="text-xs font-bold text-ggu-gold uppercase tracking-wider">Methodological Backbone</span>
+            <h3 class="text-xl font-bold text-white">Design Science Research Methodology (Peffers et al., 2007)</h3>
+          </div>
+          <span class="text-xs text-slate-400">Iterative Rigor & Relevance Cycles</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="text-xs font-mono text-ggu-gold font-bold">STAGE 1</div>
+            <h4 class="font-bold text-white text-sm mt-1">Problem Identification</h4>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              Synthesized literature showing LLMs treat YANG as unstructured text, leading to hallucinations and prohibitive context window bloat in enterprise netops.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="text-xs font-mono text-ggu-gold font-bold">STAGE 2</div>
+            <h4 class="font-bold text-white text-sm mt-1">Objective Definition</h4>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              Specify technical requirements: preserve hierarchical YANG constraints, compress schema retrieval tokens, enforce deterministic pre-deployment validation.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="text-xs font-mono text-ggu-gold font-bold">STAGE 3</div>
+            <h4 class="font-bold text-white text-sm mt-1">Design & Development</h4>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              Engineered the SAVENT artifact: CUA path compression algorithm, schema hints extractor, YANG-IR translator, and automated libyang test harness.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="text-xs font-mono text-ggu-gold font-bold">STAGE 4</div>
+            <h4 class="font-bold text-white text-sm mt-1">Demonstration</h4>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              Demonstrate translation on 100 enterprise scenarios across Simple, Medium, and Complex topologies (L2/VLAN, L3/IP, ACL, and LACP/LAG) with OpenConfig models.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="text-xs font-mono text-ggu-gold font-bold">STAGE 5</div>
+            <h4 class="font-bold text-white text-sm mt-1">Dual Evaluation</h4>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              1) Quantitative hypothesis testing of SVR, IAS, CHR, RSCS. 2) Blinded expert instrument rating (Appendix C) with enterprise netops engineers.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="text-xs font-mono text-ggu-gold font-bold">STAGE 6</div>
+            <h4 class="font-bold text-white text-sm mt-1">Scholarly Communication</h4>
+            <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+              DBA dissertation presentation, peer-reviewed publications, open reproducibility datasets, and prescriptive architectural guidelines for enterprises.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: INTERACTIVE PIPELINE SIMULATOR      -->
+    <!-- ========================================== -->
+    <section id="content-simulator" class="tab-content space-y-8 hidden">
+      
+      <!-- Simulator Intro Header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            Interactive Research Workbench
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">SAVENT vs. Baseline Comparative Simulator</h2>
+        </div>
+        <p class="text-xs text-slate-400 mt-2 md:mt-0 max-w-md">
+          Simulate enterprise network intent translation. Compare Full-Module YANG RAG (Baseline) against SAVENT's CUA compact retrieval and verification engine.
+        </p>
+      </div>
+
+      <!-- Controls Panel -->
+      <div class="custom-gradient-card rounded-2xl p-6 border border-slate-800 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+          
+          <!-- Scenario Selector -->
+          <div class="md:col-span-6 space-y-1.5">
+            <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="folder-git-2" class="w-3.5 h-3.5 text-ggu-gold"></i>
+              Select Enterprise Intent Scenario
+            </label>
+            <select id="sim-scenario-select" onchange="loadScenarioDetails()" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-ggu-gold transition">
+              <option value="vlan-trunk">SCENARIO-01 [Simple]: 802.1Q VLAN Trunking (openconfig-vlan)</option>
+              <option value="l3-interface">SCENARIO-02 [Simple]: IPv4 Routed Subinterface (openconfig-if-ip)</option>
+              <option value="lacp-lag">SCENARIO-03 [Complex]: LACP 802.3ad LAG Bundle (openconfig-if-aggregate)</option>
+              <option value="acl-security">SCENARIO-04 [Medium]: Ingress IPv4 ACL Packet Filtering (openconfig-acl)</option>
+            </select>
+          </div>
+
+          <!-- Model & Decoding Settings -->
+          <div class="md:col-span-3 space-y-1.5">
+            <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="cpu" class="w-3.5 h-3.5 text-slate-400"></i>
+              Underlying LLM Engine
+            </label>
+            <select id="sim-model-select" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 focus:outline-none">
+              <option value="gpt4o">GPT-4o (Temperature: 0.0, Seed: 42)</option>
+              <option value="claude35">Claude 3.5 Sonnet (Temp: 0.0, Seed: 42)</option>
+              <option value="llama3-70b">Llama-3-70B-Instruct (Temp: 0.0)</option>
+            </select>
+          </div>
+
+          <!-- Run Button -->
+          <div class="md:col-span-3">
+            <button onclick="runSimulation()" id="btn-run-sim" class="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold py-2 px-4 rounded-lg text-sm flex items-center justify-center gap-2 shadow-lg transition">
+              <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+              <span>Execute Comparison</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Intent Description Display -->
+        <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800 text-xs">
+          <div class="flex items-center justify-between text-slate-400 mb-1">
+            <span class="font-mono font-semibold uppercase text-ggu-gold" id="sim-scenario-meta">OpenConfig: openconfig-interfaces.yang + openconfig-vlan.yang</span>
+            <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-300" id="sim-scenario-tier">Tier: Simple</span>
+          </div>
+          <div class="text-slate-200 font-sans italic" id="sim-intent-text">
+            "Configure GigabitEthernet0/0/1 as an 802.1Q trunk port allowing VLANs 100 and 200, with VLAN 100 as the native untagged VLAN."
+          </div>
+        </div>
+      </div>
+
+      <!-- Execution Progress State Bar -->
+      <div id="sim-loading-bar" class="hidden custom-gradient-card rounded-xl p-4 border border-ggu-gold/40 text-center space-y-2">
+        <div class="flex items-center justify-center gap-2 text-sm text-ggu-gold font-semibold">
+          <i data-lucide="loader" class="w-4 h-4 animate-spin"></i>
+          <span>Executing Comparative Pipeline & Invoking libyang yanglint verification...</span>
+        </div>
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+          <div class="bg-gradient-to-r from-ggu-gold to-emerald-400 h-full w-2/3 animate-pulse"></div>
+        </div>
+      </div>
+
+      <!-- Side-by-Side Comparison Container -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="sim-results-grid">
+        
+        <!-- Condition A: Baseline (Full-Module YANG Retrieval) -->
+        <div class="custom-gradient-card rounded-2xl p-6 border border-slate-800 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-slate-500"></span>
+                <h4 class="font-bold text-white text-base">Baseline: Full-Module YANG RAG</h4>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 font-mono" id="baseline-status-badge">
+                SCHEMA FAIL
+              </span>
+            </div>
+
+            <!-- Quantitative Metrics Row -->
+            <div class="grid grid-cols-4 gap-2 my-4 text-center">
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-semibold uppercase">RSCS (Context)</div>
+                <div class="text-lg font-mono font-bold text-amber-400" id="base-m-rscs">14,820</div>
+                <div class="text-[9px] text-slate-300">tokens</div>
+              </div>
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-semibold uppercase">SVR (Pass)</div>
+                <div class="text-lg font-mono font-bold text-rose-400" id="base-m-svr">0.00</div>
+                <div class="text-[9px] text-slate-300">yanglint</div>
+              </div>
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-semibold uppercase">IAS (Adhere)</div>
+                <div class="text-lg font-mono font-bold text-slate-200" id="base-m-ias">0.67</div>
+                <div class="text-[9px] text-slate-300">2/3 reqs</div>
+              </div>
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                <div class="text-[10px] text-slate-400 font-semibold uppercase">CHR (Halluc)</div>
+                <div class="text-lg font-mono font-bold text-rose-400" id="base-m-chr">0.24</div>
+                <div class="text-[9px] text-slate-300">4 invalid nodes</div>
+              </div>
+            </div>
+
+            <!-- Code & Validation Log Tabbed View -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs text-slate-400">
+                <span class="font-mono">Generated OpenConfig JSON:</span>
+                <span class="text-rose-400 flex items-center gap-1 text-[11px]">
+                  <i data-lucide="alert-circle" class="w-3 h-3"></i> 2 libyang errors detected
+                </span>
+              </div>
+              <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-xs text-slate-300 h-64 overflow-y-auto" id="base-code-output">{
+  "openconfig-interfaces:interfaces": {
+    "interface": [
+      {
+        "name": "GigabitEthernet0/0/1",
+        "config": {
+          "name": "GigabitEthernet0/0/1",
+          "type": "iana-if-type:ethernetCsmacd"
+        },
+        "openconfig-vlan:routed-vlan": {
+          "config": {
+            "vlan-id": 100,
+            "trunk-vlans": [100, 200]
+          }
+        }
+      }
+    ]
+  }
+}</pre>
+            </div>
+          </div>
+
+          <!-- Error Traceback Box -->
+          <div class="p-3 bg-rose-950/30 border border-rose-800/40 rounded-lg text-xs text-rose-300 font-mono" id="base-diag-box">
+            [yanglint error]: Unknown element "trunk-vlans" under container "routed-vlan". Missing mandatory OpenConfig path: /interfaces/interface/subinterfaces/subinterface/openconfig-vlan:vlan/
+          </div>
+        </div>
+
+        <!-- Condition B: SAVENT (CUA Schema-Aware Retrieval & Verification) -->
+        <div class="custom-gradient-card rounded-2xl p-6 border-2 border-ggu-gold flex flex-col justify-between space-y-4 shadow-xl">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center space-x-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                <h4 class="font-bold text-white text-base">SAVENT: Compact CUA + libyang</h4>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono" id="savent-status-badge">
+                SCHEMA PASSED (100%)
+              </span>
+            </div>
+
+            <!-- Quantitative Metrics Row -->
+            <div class="grid grid-cols-4 gap-2 my-4 text-center">
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-ggu-gold/30">
+                <div class="text-[10px] text-ggu-gold font-semibold uppercase">RSCS (Context)</div>
+                <div class="text-lg font-mono font-bold text-emerald-400" id="savent-m-rscs">1,140</div>
+                <div class="text-[9px] text-emerald-300 font-bold">-92.3% Tokens</div>
+              </div>
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-ggu-gold/30">
+                <div class="text-[10px] text-ggu-gold font-semibold uppercase">SVR (Pass)</div>
+                <div class="text-lg font-mono font-bold text-emerald-400" id="savent-m-svr">1.00</div>
+                <div class="text-[9px] text-emerald-300">RFC 7950 Valid</div>
+              </div>
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-ggu-gold/30">
+                <div class="text-[10px] text-ggu-gold font-semibold uppercase">IAS (Adhere)</div>
+                <div class="text-lg font-mono font-bold text-emerald-400" id="savent-m-ias">1.00</div>
+                <div class="text-[9px] text-emerald-300">3/3 Satisfied</div>
+              </div>
+              <div class="bg-slate-900/90 p-2.5 rounded-lg border border-ggu-gold/30">
+                <div class="text-[10px] text-ggu-gold font-semibold uppercase">CHR (Halluc)</div>
+                <div class="text-lg font-mono font-bold text-emerald-400" id="savent-m-chr">0.00</div>
+                <div class="text-[9px] text-emerald-300">0 Hallucinations</div>
+              </div>
+            </div>
+
+            <!-- Code & Validation Log Tabbed View -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs text-slate-400">
+                <span class="font-mono">Verified OpenConfig JSON (CUA Transformed):</span>
+                <span class="text-emerald-400 flex items-center gap-1 text-[11px]">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i> libyang: 0 errors, 0 warnings
+                </span>
+              </div>
+              <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-xs text-emerald-300/90 h-64 overflow-y-auto" id="savent-code-output">{
+  "openconfig-interfaces:interfaces": {
+    "interface": [
+      {
+        "name": "GigabitEthernet0/0/1",
+        "config": {
+          "name": "GigabitEthernet0/0/1",
+          "type": "iana-if-type:ethernetCsmacd"
+        },
+        "subinterfaces": {
+          "subinterface": [
+            {
+              "index": 0,
+              "openconfig-vlan:vlan": {
+                "match": {
+                  "single-tagged": {
+                    "config": {
+                      "vlan-id": 100
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}</pre>
+            </div>
+          </div>
+
+          <!-- Success Traceback Box -->
+          <div class="p-3 bg-emerald-950/30 border border-emerald-800/40 rounded-lg text-xs text-emerald-300 font-mono" id="savent-diag-box">
+            [Deterministic Verification Passed]: Closest Unique Ancestor (CUA) pruned 13,680 irrelevant tokens. RFC 7950 constraints verified against openconfig-vlan revision 2023-02-06.
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: RESEARCH TRACEABILITY MATRIX        -->
+    <!-- ========================================== -->
+    <section id="content-traceability" class="tab-content space-y-8 hidden">
+      
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-ggu-gold uppercase tracking-wider">Methodological Coherence</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Research Traceability Matrix</h2>
+        </div>
+        <div class="text-xs text-slate-400 mt-2 sm:mt-0">
+          Mapping Aim &rarr; RO &rarr; RQ &rarr; Hypotheses &rarr; Metrics (Tables 1, 4 & 6)
+        </div>
+      </div>
+
+      <!-- Conceptual Pathway (Figure 3) Banner -->
+      <div class="custom-gradient-card rounded-2xl p-6 border border-slate-800">
+        <h3 class="text-sm font-bold text-ggu-gold uppercase tracking-wider mb-3">Figure 3: Intent-to-Trustworthiness Pathway</h3>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-center">
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-slate-400 uppercase font-mono">1. Input</span>
+            <div class="text-xs font-bold text-white mt-1">Enterprise Intent</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Plain-language policy</div>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900 border border-ggu-gold/40">
+            <span class="text-[10px] text-ggu-gold uppercase font-mono">2. SAVENT Mechanism</span>
+            <div class="text-xs font-bold text-white mt-1">Schema CUA + IR</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Deterministic synthesis</div>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-emerald-400 uppercase font-mono">3. Outcome Metrics</span>
+            <div class="text-xs font-bold text-white mt-1">SVR, IAS, CHR, RSCS</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Quantitative Profile</div>
+          </div>
+          <div class="p-3 rounded-lg bg-slate-900 border border-slate-800">
+            <span class="text-[10px] text-purple-400 uppercase font-mono">4. Praxis Adoption</span>
+            <div class="text-xs font-bold text-white mt-1">Expert Evaluation</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Enterprise HITL Review</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Traceability Matrix Table -->
+      <div class="custom-gradient-card rounded-2xl overflow-hidden border border-slate-800">
+        <div class="p-4 bg-slate-900/90 border-b border-slate-800 flex justify-between items-center">
+          <span class="text-xs font-bold text-white uppercase tracking-wider">Traceability Matrix (Table 6 Synthesis)</span>
+          <span class="text-xs text-ggu-gold font-mono">Materiality Margin &Delta; = &plusmn;0.05</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-900 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+              <tr>
+                <th class="p-3">Research Objective (RO)</th>
+                <th class="p-3">Research Question (RQ)</th>
+                <th class="p-3">Hypothesis</th>
+                <th class="p-3">Independent Var (IV)</th>
+                <th class="p-3">Dependent Var (DV)</th>
+                <th class="p-3">Metrics & Protocol</th>
+                <th class="p-3">Target Standard</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300">
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-semibold text-white">RO1: Diagnostic Analysis</td>
+                <td class="p-3 font-mono text-ggu-gold">RQ1 (Diagnostic)</td>
+                <td class="p-3 text-slate-400">—</td>
+                <td class="p-3">Existing Schema Approaches</td>
+                <td class="p-3">Representational Bottlenecks</td>
+                <td class="p-3 font-mono">Literature Synthesis</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">Qualitative Gap Mapping</span></td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-semibold text-white">RO2 & RO3: Design & Develop SAVENT Artifact</td>
+                <td class="p-3 font-mono text-ggu-gold">RQ2 & RQ3</td>
+                <td class="p-3 font-mono text-emerald-400">H1, H2a</td>
+                <td class="p-3">CUA Path Compression & Hints</td>
+                <td class="p-3">Intermediate Schema (YANG-IR)</td>
+                <td class="p-3 font-mono">Context Size & Accuracy</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-blue-900/50 text-blue-300 border border-blue-700/50">DSR Prototype</span></td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-semibold text-white">RO4 & RO5: Evaluation of Trustworthiness</td>
+                <td class="p-3 font-mono text-ggu-gold">RQ2 (Effectiveness)</td>
+                <td class="p-3 font-mono text-emerald-400">H1</td>
+                <td class="p-3">Framework Type (Baseline vs SAVENT)</td>
+                <td class="p-3">Trustworthiness Profile</td>
+                <td class="p-3 font-mono">SVR, IAS, CHR</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-900/50 text-emerald-300 border border-emerald-700/50">SVR &uarr;, IAS &uarr;, CHR &darr; (p&lt;0.05)</span></td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-semibold text-white">RO5: Evaluation of Retrieval Efficiency</td>
+                <td class="p-3 font-mono text-ggu-gold">RQ3 (Efficiency)</td>
+                <td class="p-3 font-mono text-emerald-400">H2a</td>
+                <td class="p-3">Retrieval Architecture</td>
+                <td class="p-3">Retrieved Schema Context</td>
+                <td class="p-3 font-mono">RSCS (Token Count)</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-emerald-900/50 text-emerald-300 border border-emerald-700/50">RSCS Reduction (p&lt;0.05)</span></td>
+              </tr>
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="p-3 font-semibold text-white">RO5: Context Tradeoff Invariance</td>
+                <td class="p-3 font-mono text-ggu-gold">RQ3 (Invariance)</td>
+                <td class="p-3 font-mono text-emerald-400">H2b</td>
+                <td class="p-3">Reduced Context Window</td>
+                <td class="p-3">Trustworthiness Non-Inferiority</td>
+                <td class="p-3 font-mono">IAS, SVR, CHR Margin</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-900/50 text-amber-300 border border-amber-700/50">No &Delta; &gt; 0.05 Degradation</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: METRICS & STATISTICAL PROTOCOL      -->
+    <!-- ========================================== -->
+    <section id="content-metrics" class="tab-content space-y-8 hidden">
+      
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-ggu-gold uppercase tracking-wider">Evaluation Methodology</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Quantitative Metrics &amp; Statistical Protocol</h2>
+        </div>
+        <div class="text-xs text-slate-400 mt-2 sm:mt-0">
+          Chapter 3: Inferential Statistics &amp; Non-Parametric Rules
+        </div>
+      </div>
+
+      <!-- The 4 Core Metrics Formula Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Metric 1: IAS -->
+        <div class="custom-gradient-card rounded-xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-ggu-gold">IAS</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Higher Favorable</span>
+          </div>
+          <h4 class="font-bold text-white text-sm">Intent Adherence Score</h4>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center gap-2 font-mono text-xs text-slate-200 py-3 shadow-inner">
+            <span class="font-bold text-ggu-gold text-sm">IAS</span>
+            <span class="text-slate-400">=</span>
+            <div class="inline-flex flex-col items-center text-center">
+              <span class="border-b border-slate-600 px-2 pb-1 text-emerald-300 font-medium leading-none">&sum; Satisfied Atomic Intent Reqs</span>
+              <span class="pt-1 px-2 text-slate-300 leading-none">Total Atomic Intent Reqs</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Measures atomic requirement alignment. Computed only when valid payload is emitted to avoid scoring non-response as zero.
+          </p>
+        </div>
+
+        <!-- Metric 2: SVR -->
+        <div class="custom-gradient-card rounded-xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-ggu-gold">SVR</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Higher Favorable</span>
+          </div>
+          <h4 class="font-bold text-white text-sm">Schema Validation Rate</h4>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center gap-2 font-mono text-xs text-slate-200 py-3 shadow-inner">
+            <span class="font-bold text-ggu-gold text-sm">SVR</span>
+            <span class="text-slate-400">=</span>
+            <div class="inline-flex flex-col items-center text-center">
+              <span class="border-b border-slate-600 px-2 pb-1 text-emerald-300 font-medium leading-none">&sum; Outputs Passing yanglint</span>
+              <span class="pt-1 px-2 text-slate-300 leading-none">Total Evaluation Runs</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Proportion of generated network configs strictly conforming to RFC 7950 YANG constraints and data definitions.
+          </p>
+        </div>
+
+        <!-- Metric 3: CHR -->
+        <div class="custom-gradient-card rounded-xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-rose-400">CHR</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-300">Lower Favorable</span>
+          </div>
+          <h4 class="font-bold text-white text-sm">Hallucination Rate</h4>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center gap-2 font-mono text-xs text-slate-200 py-3 shadow-inner">
+            <span class="font-bold text-rose-400 text-sm">CHR</span>
+            <span class="text-slate-400">=</span>
+            <div class="inline-flex flex-col items-center text-center">
+              <span class="border-b border-slate-600 px-2 pb-1 text-rose-300 font-medium leading-none">&sum; Invalid or Hallucinated Nodes</span>
+              <span class="pt-1 px-2 text-slate-300 leading-none">Total Generated Nodes</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Quantifies non-existent leaves, containers, or illegal schema paths generated by the underlying language model.
+          </p>
+        </div>
+
+        <!-- Metric 4: RSCS -->
+        <div class="custom-gradient-card rounded-xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-blue-400">RSCS</span>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">Lower Favorable</span>
+          </div>
+          <h4 class="font-bold text-white text-sm">Retrieved Context Size</h4>
+          <div class="p-3 bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center gap-2 font-mono text-xs text-slate-200 py-3 shadow-inner">
+            <span class="font-bold text-blue-400 text-sm">RSCS</span>
+            <span class="text-slate-400">=</span>
+            <div class="text-center font-medium text-blue-300">
+              Tokens in Context Supplied
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Measures retrieval efficiency. Lower tokens reduce inference cost, latency, and context degradation without degrading trust.
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistical Protocol Deep Dive (Table 8) -->
+      <div class="custom-gradient-card rounded-2xl p-6 sm:p-7 space-y-4">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="binary" class="w-5 h-5 text-ggu-gold"></i>
+          Inferential Testing Protocol (Table 8 in Proposal)
+        </h3>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          To ensure methodological rigor, the study avoids ad-hoc statistical assumptions. The 100 enterprise scenarios undergo paired evaluation under identical decoding conditions.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
+            <h5 class="text-xs font-bold text-white uppercase tracking-wider">1. Normality Test</h5>
+            <p class="text-xs text-slate-300 mt-1">
+              Shapiro-Wilk test applied to paired differences (&Delta; = SAVENT - Baseline). If normal (p &ge; 0.05), report paired t-test; if non-normal, Wilcoxon signed-rank test.
+            </p>
+          </div>
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
+            <h5 class="text-xs font-bold text-white uppercase tracking-wider">2. Family-Wise Correction</h5>
+            <p class="text-xs text-slate-300 mt-1">
+              Hypothesis 1 tests (SVR, IAS, CHR) are treated as one hypothesis family for each model. p-values corrected using the <strong class="text-slate-100">Holm-Bonferroni step-down</strong> method.
+            </p>
+          </div>
+          <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
+            <h5 class="text-xs font-bold text-white uppercase tracking-wider">3. Materiality & Effect Size</h5>
+            <p class="text-xs text-slate-300 mt-1">
+              Predefined practical materiality threshold <code class="text-amber-300 font-bold">&Delta; = &plusmn;0.05</code>. Effect sizes reported via Cohen's d (parametric) or Rank-biserial r (non-parametric).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Trustworthiness Calculator -->
+      <div class="custom-gradient-card rounded-2xl p-6 sm:p-7 border border-ggu-gold/30 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="sliders" class="w-5 h-5 text-ggu-gold"></i>
+            Interactive Trustworthiness Profile Verifier
+          </h3>
+          <span class="text-xs text-slate-400">Table 10 Compliance Engine</span>
+        </div>
+        <p class="text-xs text-slate-300">
+          Adjust hypothetical test scenario metrics below to evaluate whether the outcome profile satisfies the dissertation's H1 and H2b success criteria.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+          <!-- SVR Slider -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Schema Validation (SVR):</span>
+              <span class="font-mono font-bold text-emerald-400" id="calc-svr-val">0.96</span>
+            </div>
+            <input type="range" id="calc-svr-slider" min="0" max="1" step="0.01" value="0.96" oninput="updateTrustProfileCalc()" class="w-full accent-emerald-500">
+            <div class="text-[10px] text-slate-300">Baseline benchmark: 0.12 - 0.45</div>
+          </div>
+
+          <!-- IAS Slider -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Intent Adherence (IAS):</span>
+              <span class="font-mono font-bold text-emerald-400" id="calc-ias-val">0.94</span>
+            </div>
+            <input type="range" id="calc-ias-slider" min="0" max="1" step="0.01" value="0.94" oninput="updateTrustProfileCalc()" class="w-full accent-emerald-500">
+            <div class="text-[10px] text-slate-300">Baseline benchmark: 0.60 - 0.72</div>
+          </div>
+
+          <!-- CHR Slider -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <span class="text-slate-300">Hallucination Rate (CHR):</span>
+              <span class="font-mono font-bold text-rose-400" id="calc-chr-val">0.02</span>
+            </div>
+            <input type="range" id="calc-chr-slider" min="0" max="0.5" step="0.01" value="0.02" oninput="updateTrustProfileCalc()" class="w-full accent-rose-500">
+            <div class="text-[10px] text-slate-300">Baseline benchmark: 0.18 - 0.35</div>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-between" id="calc-verdict-box">
+          <div class="flex items-center space-x-2 text-xs">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+            <span class="text-white font-semibold">Trustworthiness Verdict:</span>
+            <span class="text-emerald-300" id="calc-verdict-text">Satisfies Hypotheses H1 & H2b (&Delta; &gt; +0.05 for SVR/IAS, CHR &lt; 0.05)</span>
+          </div>
+          <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">PASS</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: APPENDIX C EXPERT EVALUATION FORM   -->
+    <!-- ========================================== -->
+    <section id="content-experteval" class="tab-content space-y-8 hidden">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-ggu-gold uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="award" class="w-3.5 h-3.5"></i> Appendix C Simulation
+          </span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Structured Expert Evaluation Instrument</h2>
+        </div>
+        <div class="text-xs text-slate-400 mt-2 sm:mt-0">
+          IRB-Compliant Blinded A/B Practitioner Review
+        </div>
+      </div>
+
+      <!-- Evaluator Screening & Instructions Banner -->
+      <div class="custom-gradient-card rounded-2xl p-6 border border-slate-800 space-y-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-3 border-b border-slate-800 text-xs">
+          <div>
+            <span class="text-slate-400">Active Evaluator ID:</span> <span class="font-mono text-ggu-gold font-bold">EXP-8421</span>
+            <span class="mx-2 text-slate-600">|</span>
+            <span class="text-slate-400">Target Panel:</span> <span class="text-white">5 Senior Network Engineers (Purposive Sample)</span>
+          </div>
+          <span class="text-emerald-400 flex items-center gap-1 mt-2 md:mt-0">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Double-Blind Source Allocation Active
+          </span>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          <strong>Evaluator Protocol:</strong> You are evaluating 6 randomized configuration scenarios across Simple, Medium, and Complex tiers. System identity (SAVENT vs. Baseline) is masked as <span class="font-mono text-ggu-gold">Config 1</span> and <span class="font-mono text-cyan-400">Config 2</span>. Rate each configuration on a 5-point Likert scale (1 = Very Low to 5 = Very High) across the 6 validated criteria.
+        </p>
+      </div>
+
+      <!-- Case Selection Tabs -->
+      <div class="flex space-x-2 overflow-x-auto pb-1 text-xs font-mono">
+        <button onclick="loadExpertCase(0)" id="case-btn-0" class="case-tab active px-3 py-1.5 rounded-lg bg-ggu-navy border border-ggu-gold text-white font-bold">Case 1 [Simple]</button>
+        <button onclick="loadExpertCase(1)" id="case-btn-1" class="case-tab px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white">Case 2 [Simple]</button>
+        <button onclick="loadExpertCase(2)" id="case-btn-2" class="case-tab px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white">Case 3 [Medium]</button>
+        <button onclick="loadExpertCase(3)" id="case-btn-3" class="case-tab px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white">Case 4 [Medium]</button>
+        <button onclick="loadExpertCase(4)" id="case-btn-4" class="case-tab px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white">Case 5 [Complex]</button>
+        <button onclick="loadExpertCase(5)" id="case-btn-5" class="case-tab px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white">Case 6 [Complex]</button>
+      </div>
+
+      <!-- Scenario Header Display -->
+      <div class="custom-gradient-card rounded-xl p-5 border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-mono text-ggu-gold font-bold" id="exp-case-title">SCENARIO-01 • VLAN Trunking</span>
+          <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]" id="exp-case-schema">Target Schema: openconfig-vlan.yang</span>
+        </div>
+        <p class="text-sm text-slate-100 font-serif italic" id="exp-case-intent">
+          "Configure GigabitEthernet0/0/1 as an 802.1Q trunk port allowing VLANs 100 and 200, with VLAN 100 as the native untagged VLAN."
+        </p>
+      </div>
+
+      <!-- Side-by-Side Candidate Configurations -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Config 1 -->
+        <div class="custom-gradient-card rounded-xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <span class="font-bold text-white text-sm">Candidate: Config 1</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" id="exp-cfg1-val">
+              yanglint: VALID
+            </span>
+          </div>
+          <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-xs text-emerald-300/90 h-52 overflow-y-auto" id="exp-cfg1-code">
+{
+  "openconfig-interfaces:interfaces": {
+    "interface": [
+      {
+        "name": "GigabitEthernet0/0/1",
+        "subinterfaces": {
+          "subinterface": [{ "index": 0, "openconfig-vlan:vlan": { "match": { "single-tagged": { "config": { "vlan-id": 100 } } } } }]
+        }
+      }
+    ]
+  }
+}
+          </pre>
+          <div class="text-[11px] text-slate-400 italic">
+            Automated Validation Result: RFC 7950 compliant. No missing mandatory keys.
+          </div>
+        </div>
+
+        <!-- Config 2 -->
+        <div class="custom-gradient-card rounded-xl p-5 border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+            <span class="font-bold text-white text-sm">Candidate: Config 2</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-500/20 text-rose-300 border border-rose-500/30" id="exp-cfg2-val">
+              yanglint: INVALID
+            </span>
+          </div>
+          <pre class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-xs text-rose-300/80 h-52 overflow-y-auto" id="exp-cfg2-code">
+{
+  "openconfig-interfaces:interfaces": {
+    "interface": [
+      {
+        "name": "GigabitEthernet0/0/1",
+        "openconfig-vlan:routed-vlan": {
+          "config": { "trunk-vlans": [100, 200] }
+        }
+      }
+    ]
+  }
+}
+          </pre>
+          <div class="text-[11px] text-slate-400 italic">
+            Automated Validation Result: Schema violation in routed-vlan container.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Rating Form Table (The 6 Criteria) -->
+      <div class="custom-gradient-card rounded-2xl overflow-hidden border border-slate-800">
+        <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider">Step 2: 5-Point Likert Quality Assessment</h4>
+          <span class="text-xs text-slate-400">1: Very Low &rarr; 5: Very High</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+              <tr>
+                <th class="p-3 w-1/3">Evaluation Criterion (RQ2)</th>
+                <th class="p-3 w-1/3 text-center">Config 1 Rating</th>
+                <th class="p-3 w-1/3 text-center">Config 2 Rating</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300">
+              <!-- Criterion 1 -->
+              <tr class="hover:bg-slate-800/30">
+                <td class="p-3">
+                  <strong class="text-white">1. Intent Alignment</strong>
+                  <p class="text-[11px] text-slate-400 mt-0.5">How clearly does the config implement stated intent requirements?</p>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5" id="rating-c1-crit1">
+                    <button onclick="setRating(1, 1, 1)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">1</button>
+                    <button onclick="setRating(1, 1, 2)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">2</button>
+                    <button onclick="setRating(1, 1, 3)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">3</button>
+                    <button onclick="setRating(1, 1, 4)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">4</button>
+                    <button onclick="setRating(1, 1, 5)" class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold border border-yellow-300">5</button>
+                  </div>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5" id="rating-c2-crit1">
+                    <button onclick="setRating(2, 1, 1)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">1</button>
+                    <button onclick="setRating(2, 1, 2)" class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">2</button>
+                    <button onclick="setRating(2, 1, 3)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">3</button>
+                    <button onclick="setRating(2, 1, 4)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">4</button>
+                    <button onclick="setRating(2, 1, 5)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">5</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Criterion 2 -->
+              <tr class="hover:bg-slate-800/30">
+                <td class="p-3">
+                  <strong class="text-white">2. Technical Plausibility</strong>
+                  <p class="text-[11px] text-slate-400 mt-0.5">How technically plausible is the config for enterprise network hardware?</p>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  </div>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Criterion 3 -->
+              <tr class="hover:bg-slate-800/30">
+                <td class="p-3">
+                  <strong class="text-white">3. Interpretability & Traceability</strong>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Can the relationship between intent, config, and schema be traced?</p>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">4</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  </div>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
+                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Criterion 4 -->
+              <tr class="hover:bg-slate-800/30">
+                <td class="p-3">
+                  <strong class="text-white">4. Perceived Trustworthiness</strong>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Trustworthiness as an input to a controlled enterprise network change review?</p>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  </div>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Criterion 5 -->
+              <tr class="hover:bg-slate-800/30">
+                <td class="p-3">
+                  <strong class="text-white">5. Controlled Adoption Suitability</strong>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Suitability for lab validation, staging, or HITL review before deployment?</p>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  </div>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
+                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Criterion 6 -->
+              <tr class="hover:bg-slate-800/30">
+                <td class="p-3">
+                  <strong class="text-white">6. Overall Assessment</strong>
+                  <p class="text-[11px] text-slate-400 mt-0.5">Overall quality assessment for controlled enterprise deployment.</p>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  </div>
+                </td>
+                <td class="p-3 text-center">
+                  <div class="flex justify-center gap-1.5">
+                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">1</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
+                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Qualitative Feedback Fields & Submissions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-300">Technical observations for Config 1:</label>
+          <textarea rows="3" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-ggu-gold" placeholder="Correct hierarchy, leafref constraints cleanly verified against OpenConfig interfaces model..."></textarea>
+        </div>
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-300">Technical observations for Config 2:</label>
+          <textarea rows="3" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-400" placeholder="Hallucinated container; invalid leafref syntax would fail staging deployment..."></textarea>
+        </div>
+      </div>
+
+      <!-- Unmasking & Panel Agreement Logic (Table 9 Simulation) -->
+      <div class="p-5 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div>
+          <div class="text-xs font-bold text-white uppercase tracking-wider">Unmasking & Agreement Module (Table 9 Protocol)</div>
+          <p class="text-xs text-slate-400 mt-1">
+            Panel size N=5 &rarr; Agreement reported via qualitative spread + mean rating comparison.
+          </p>
+        </div>
+        <button onclick="revealBlindedMapping()" class="px-4 py-2 rounded-lg bg-ggu-navy border border-ggu-gold text-ggu-gold hover:bg-ggu-gold hover:text-slate-950 font-bold text-xs transition flex items-center gap-2">
+          <i data-lucide="eye" class="w-4 h-4"></i>
+          <span>Reveal System Allocation</span>
+        </button>
+      </div>
+
+      <div id="unmask-result-alert" class="hidden p-4 rounded-xl bg-slate-950 border border-ggu-gold text-xs space-y-2">
+        <div class="flex items-center gap-2 text-ggu-gold font-bold">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          <span>Blinded System Identity Revealed:</span>
+        </div>
+        <p class="text-slate-300">
+          In this scenario: <strong class="text-emerald-400">Config 1 = SAVENT Framework</strong> (Average Rating: 4.83 / 5.00) vs. <strong class="text-rose-400">Config 2 = Full-Module Baseline</strong> (Average Rating: 1.50 / 5.00). Practitioner ratings strongly converge with quantitative hypothesis H1.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 7: LITERATURE SYNTHESIS (APPENDIX A)   -->
+    <!-- ========================================== -->
+    <section id="content-literature" class="tab-content space-y-8 hidden">
+      
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 border-b border-slate-800">
+        <div>
+          <span class="text-xs font-bold text-ggu-gold uppercase tracking-wider">Appendix A Synthesis</span>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white mt-1">Literature Corpus & Research Positioning</h2>
+        </div>
+        <div class="text-xs text-slate-400 mt-2 sm:mt-0">
+          5 Core Thematic Pillars (2018–2026 Focus)
+        </div>
+      </div>
+
+      <!-- Filter & Search Controls -->
+      <div class="custom-gradient-card rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-4">
+        <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
+          <!-- Search Input -->
+          <div class="relative w-full md:w-96">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="text" id="lit-search-input" onkeyup="filterLiterature()" placeholder="Search author, method, theme (e.g. NetConfEval, GraphRAG)..." class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-ggu-gold">
+          </div>
+
+          <!-- Theme Filter Pills -->
+          <div class="flex flex-wrap gap-2 text-xs">
+            <button onclick="filterByTheme('all')" class="lit-theme-btn active px-3 py-1 rounded-full bg-ggu-gold text-slate-950 font-bold">All (20)</button>
+            <button onclick="filterByTheme('Theme 1')" class="lit-theme-btn px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-700">T1: IBN Lifecycle</button>
+            <button onclick="filterByTheme('Theme 2')" class="lit-theme-btn px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-700">T2: AI Config Gen</button>
+            <button onclick="filterByTheme('Theme 3')" class="lit-theme-btn px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-700">T3: Schema Representation</button>
+            <button onclick="filterByTheme('Theme 4')" class="lit-theme-btn px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-700">T4: Schema Retrieval</button>
+            <button onclick="filterByTheme('Theme 5')" class="lit-theme-btn px-3 py-1 rounded-full bg-slate-900 text-slate-300 border border-slate-700">T5: Trustworthy AI</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Literature Table -->
+      <div class="custom-gradient-card rounded-2xl overflow-hidden border border-slate-800">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs" id="literature-table">
+            <thead class="bg-slate-900 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+              <tr>
+                <th class="p-3 w-1/5">Author & Year</th>
+                <th class="p-3 w-1/6">Theme & Study Focus</th>
+                <th class="p-3 w-1/4">Key Contribution</th>
+                <th class="p-3 w-1/4">Identified Limitations & Gaps</th>
+                <th class="p-3">Relevance to SAVENT</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800 text-slate-300" id="literature-tbody">
+              <!-- Dynamically populated via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="bg-ggu-navy border-t border-slate-800 py-8 text-xs text-slate-400 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded bg-ggu-gold text-slate-950 font-serif font-black flex items-center justify-center text-sm">
+          GGU
+        </div>
+        <div>
+          <div class="text-white font-bold">Doctor of Business Administration (DBA) • Emerging Technologies</div>
+          <div class="text-slate-400">Golden Gate University Worldwide • Topic Proposal Defense</div>
+        </div>
+      </div>
+      <div class="text-center md:text-right">
+        <div>Doctoral Research Dossier • <span class="text-slate-200 font-semibold">Generative AI Concentration</span></div>
+        <div class="text-[11px] text-slate-400 mt-1">Research Artifact: SAVENT (Schema-Aware Verified Framework for Enterprise Network Configuration)</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Scenario Data Bank (Standard RFC 7951 OpenConfig JSON for L2/L3/VLAN/ACL/LAG)
+    const scenarios = {
+      'vlan-trunk': {
+        tier: 'Tier: Simple (L2/VLAN)',
+        meta: 'OpenConfig: openconfig-interfaces.yang & openconfig-vlan.yang',
+        intent: 'Configure GigabitEthernet0/0/1 as an 802.1Q trunk port allowing VLANs 100 and 200, with VLAN 100 as the native untagged VLAN.',
+        base: {
+          rscs: '14,820',
+          svr: '0.00',
+          ias: '0.67',
+          chr: '0.24',
+          status: 'SCHEMA FAIL (2 ERRORS)',
+          statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+          code: JSON.stringify({
+            "openconfig-interfaces:interfaces": {
+              "interface": [
+                {
+                  "name": "GigabitEthernet0/0/1",
+                  "config": {
+                    "name": "GigabitEthernet0/0/1",
+                    "type": "iana-if-type:ethernetCsmacd"
+                  },
+                  "openconfig-vlan:routed-vlan": {
+                    "config": {
+                      "vlan-id": 100,
+                      "trunk-vlans": [100, 200]
+                    }
+                  }
+                }
+              ]
+            }
+          }, null, 2),
+          diag: '[yanglint error]: Unknown element "trunk-vlans" under container "routed-vlan". Missing mandatory RFC 7950 path: /interfaces/interface/subinterfaces/subinterface/openconfig-vlan:vlan/'
+        },
+        savent: {
+          rscs: '1,140',
+          svr: '1.00',
+          ias: '1.00',
+          chr: '0.00',
+          status: 'SCHEMA PASSED (100%)',
+          statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+          code: JSON.stringify({
+            "openconfig-interfaces:interfaces": {
+              "interface": [
+                {
+                  "name": "GigabitEthernet0/0/1",
+                  "config": {
+                    "name": "GigabitEthernet0/0/1",
+                    "type": "iana-if-type:ethernetCsmacd"
+                  },
+                  "subinterfaces": {
+                    "subinterface": [
+                      {
+                        "index": 0,
+                        "openconfig-vlan:vlan": {
+                          "match": {
+                            "single-tagged": {
+                              "config": {
+                                "vlan-id": 100
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }, null, 2),
+          diag: '[Deterministic Verification Passed]: Closest Unique Ancestor (CUA) pruned 13,680 irrelevant tokens. RFC 7950 constraints verified against openconfig-vlan revision 2023-02-06.'
+        }
+      },
+      'l3-interface': {
+        tier: 'Tier: Simple (L3/IP)',
+        meta: 'OpenConfig: openconfig-interfaces.yang & openconfig-if-ip.yang',
+        intent: 'Configure interface GigabitEthernet0/0/2 subinterface 50 with IPv4 address 192.168.50.1/24 and description "Corporate-LAN-Gateway".',
+        base: {
+          rscs: '16,210',
+          svr: '0.00',
+          ias: '0.60',
+          chr: '0.28',
+          status: 'SCHEMA FAIL (3 ERRORS)',
+          statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+          code: JSON.stringify({
+            "openconfig-interfaces:interfaces": {
+              "interface": [
+                {
+                  "name": "GigabitEthernet0/0/2",
+                  "config": {
+                    "name": "GigabitEthernet0/0/2",
+                    "ip-address": "192.168.50.1/24",
+                    "description": "Corporate-LAN-Gateway"
+                  }
+                }
+              ]
+            }
+          }, null, 2),
+          diag: '[yanglint error]: Leaf "ip-address" not found in container "config". IPv4 configuration must reside under openconfig-if-ip:ipv4/addresses/address container.'
+        },
+        savent: {
+          rscs: '1,280',
+          svr: '1.00',
+          ias: '1.00',
+          chr: '0.00',
+          status: 'SCHEMA PASSED (100%)',
+          statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+          code: JSON.stringify({
+            "openconfig-interfaces:interfaces": {
+              "interface": [
+                {
+                  "name": "GigabitEthernet0/0/2",
+                  "config": {
+                    "name": "GigabitEthernet0/0/2",
+                    "type": "iana-if-type:ethernetCsmacd"
+                  },
+                  "subinterfaces": {
+                    "subinterface": [
+                      {
+                        "index": 50,
+                        "config": {
+                          "index": 50,
+                          "description": "Corporate-LAN-Gateway"
+                        },
+                        "openconfig-if-ip:ipv4": {
+                          "addresses": {
+                            "address": [
+                              {
+                                "ip": "192.168.50.1",
+                                "config": {
+                                  "ip": "192.168.50.1",
+                                  "prefix-length": 24
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }, null, 2),
+          diag: '[Deterministic Verification Passed]: Structural leafref /interfaces/interface/subinterfaces/subinterface/openconfig-if-ip:ipv4/addresses/address/ip verified. 0 schema errors.'
+        }
+      },
+      'lacp-lag': {
+        tier: 'Tier: Complex (LACP/LAG)',
+        meta: 'OpenConfig: openconfig-interfaces.yang & openconfig-if-aggregate.yang',
+        intent: 'Configure aggregated bundle Port-Channel10 with LACP mode ACTIVE, min-links 2, and bind physical member ports GigabitEthernet0/0/1 and GigabitEthernet0/0/2.',
+        base: {
+          rscs: '22,400',
+          svr: '0.00',
+          ias: '0.50',
+          chr: '0.35',
+          status: 'SCHEMA FAIL (4 ERRORS)',
+          statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+          code: JSON.stringify({
+            "openconfig-interfaces:interfaces": {
+              "interface": [
+                {
+                  "name": "Port-Channel10",
+                  "config": {
+                    "name": "Port-Channel10",
+                    "lacp-mode": "ACTIVE",
+                    "minimum-links": 2,
+                    "members": ["GigabitEthernet0/0/1", "GigabitEthernet0/0/2"]
+                  }
+                }
+              ]
+            }
+          }, null, 2),
+          diag: '[yanglint error]: Unknown elements "lacp-mode", "minimum-links", and "members" in config container. Aggregation requires openconfig-if-aggregate:aggregation container.'
+        },
+        savent: {
+          rscs: '1,890',
+          svr: '1.00',
+          ias: '1.00',
+          chr: '0.00',
+          status: 'SCHEMA PASSED (100%)',
+          statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+          code: JSON.stringify({
+            "openconfig-interfaces:interfaces": {
+              "interface": [
+                {
+                  "name": "Port-Channel10",
+                  "config": {
+                    "name": "Port-Channel10",
+                    "type": "iana-if-type:ieee8023adLag"
+                  },
+                  "openconfig-if-aggregate:aggregation": {
+                    "config": {
+                      "lag-type": "LACP",
+                      "min-links": 2
+                    }
+                  }
+                },
+                {
+                  "name": "GigabitEthernet0/0/1",
+                  "openconfig-if-ethernet:ethernet": {
+                    "config": {
+                      "aggregate-id": "Port-Channel10"
+                    }
+                  }
+                },
+                {
+                  "name": "GigabitEthernet0/0/2",
+                  "openconfig-if-ethernet:ethernet": {
+                    "config": {
+                      "aggregate-id": "Port-Channel10"
+                    }
+                  }
+                }
+              ]
+            }
+          }, null, 2),
+          diag: '[Deterministic Verification Passed]: Validated ieee8023adLag type, aggregation container, and aggregate-id member leafrefs against RFC 7950 constraints.'
+        }
+      },
+      'acl-security': {
+        tier: 'Tier: Medium (ACL)',
+        meta: 'OpenConfig: openconfig-acl.yang',
+        intent: 'Create ingress IPv4 ACL "WAN-HARDENED-IN" dropping RFC 1918 subnets (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and permitting all remaining traffic with telemetry counter enabled.',
+        base: {
+          rscs: '18,340',
+          svr: '0.00',
+          ias: '0.75',
+          chr: '0.19',
+          status: 'SCHEMA FAIL (1 ERROR)',
+          statusClass: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+          code: JSON.stringify({
+            "openconfig-acl:acl": {
+              "acl-sets": {
+                "acl-set": [
+                  {
+                    "name": "WAN-HARDENED-IN",
+                    "type": "ACL_IPV4",
+                    "acl-entries": {
+                      "acl-entry": [
+                        {
+                          "sequence-id": 10,
+                          "action": "DENY",
+                          "ipv4": {
+                            "config": {
+                              "source-address": "10.0.0.0/8"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }, null, 2),
+          diag: '[yanglint error]: Invalid value "DENY" for identityref "FORWARDING_ACTION". OpenConfig defines "openconfig-acl:DROP" or "ACCEPT".'
+        },
+        savent: {
+          rscs: '1,450',
+          svr: '1.00',
+          ias: '1.00',
+          chr: '0.00',
+          status: 'SCHEMA PASSED (100%)',
+          statusClass: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+          code: JSON.stringify({
+            "openconfig-acl:acl": {
+              "acl-sets": {
+                "acl-set": [
+                  {
+                    "name": "WAN-HARDENED-IN",
+                    "type": "openconfig-acl:ACL_IPV4",
+                    "config": {
+                      "name": "WAN-HARDENED-IN",
+                      "type": "openconfig-acl:ACL_IPV4"
+                    },
+                    "acl-entries": {
+                      "acl-entry": [
+                        {
+                          "sequence-id": 10,
+                          "actions": {
+                            "config": {
+                              "forwarding-action": "openconfig-acl:DROP"
+                            }
+                          },
+                          "ipv4": {
+                            "config": {
+                              "source-address": "10.0.0.0/8"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }, null, 2),
+          diag: '[Deterministic Verification Passed]: Validated identityref enums and hierarchical sub-containers for openconfig-acl without schema mismatches.'
+        }
+      }
+    };
+
+    // Expert Evaluation Cases (Appendix C) strictly for L2/L3/VLAN/ACL/LAG
+    const expertCases = [
+      {
+        id: "SCENARIO-01",
+        tier: "Simple (L2/VLAN)",
+        schema: "Target: openconfig-interfaces.yang & openconfig-vlan.yang",
+        intent: "Configure GigabitEthernet0/0/1 as an 802.1Q trunk port allowing VLANs 100 and 200, with VLAN 100 as native untagged VLAN.",
+        cfg1_status: "yanglint: VALID",
+        cfg2_status: "yanglint: INVALID",
+        cfg1_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "GigabitEthernet0/0/1",
+                "subinterfaces": {
+                  "subinterface": [
+                    {
+                      "index": 0,
+                      "openconfig-vlan:vlan": {
+                        "match": {
+                          "single-tagged": {
+                            "config": {
+                              "vlan-id": 100
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }, null, 2),
+        cfg2_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "GigabitEthernet0/0/1",
+                "openconfig-vlan:routed-vlan": {
+                  "config": {
+                    "trunk-vlans": [100, 200]
+                  }
+                }
+              }
+            ]
+          }
+        }, null, 2)
+      },
+      {
+        id: "SCENARIO-02",
+        tier: "Simple (L2 Access)",
+        schema: "Target: openconfig-interfaces.yang & openconfig-vlan.yang",
+        intent: "Configure Ethernet1/5 as an access port assigned to VLAN 20 (Engineering) with port description 'Desktop Access'.",
+        cfg1_status: "yanglint: VALID",
+        cfg2_status: "yanglint: INVALID",
+        cfg1_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "Ethernet1/5",
+                "config": {
+                  "name": "Ethernet1/5",
+                  "description": "Desktop Access",
+                  "type": "iana-if-type:ethernetCsmacd"
+                },
+                "openconfig-ethernet:ethernet": {
+                  "openconfig-vlan:switched-vlan": {
+                    "config": {
+                      "interface-mode": "ACCESS",
+                      "access-vlan": 20
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }, null, 2),
+        cfg2_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "Ethernet1/5",
+                "config": {
+                  "vlan": 20,
+                  "port-type": "access"
+                }
+              }
+            ]
+          }
+        }, null, 2)
+      },
+      {
+        id: "SCENARIO-03",
+        tier: "Medium (L3/IP Routing)",
+        schema: "Target: openconfig-interfaces.yang & openconfig-if-ip.yang",
+        intent: "Configure GigabitEthernet0/0/2 subinterface 10 with IPv4 192.168.10.1/24 and IPv6 2001:db8:10::1/64.",
+        cfg1_status: "yanglint: VALID",
+        cfg2_status: "yanglint: INVALID",
+        cfg1_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "GigabitEthernet0/0/2",
+                "subinterfaces": {
+                  "subinterface": [
+                    {
+                      "index": 10,
+                      "openconfig-if-ip:ipv4": {
+                        "addresses": {
+                          "address": [
+                            {
+                              "ip": "192.168.10.1",
+                              "config": { "ip": "192.168.10.1", "prefix-length": 24 }
+                            }
+                          ]
+                        }
+                      },
+                      "openconfig-if-ip:ipv6": {
+                        "addresses": {
+                          "address": [
+                            {
+                              "ip": "2001:db8:10::1",
+                              "config": { "ip": "2001:db8:10::1", "prefix-length": 64 }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }, null, 2),
+        cfg2_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "GigabitEthernet0/0/2.10",
+                "config": {
+                  "ipv4": "192.168.10.1/24",
+                  "ipv6": "2001:db8:10::1/64"
+                }
+              }
+            ]
+          }
+        }, null, 2)
+      },
+      {
+        id: "SCENARIO-04",
+        tier: "Medium (ACL)",
+        schema: "Target: openconfig-acl.yang",
+        intent: "Create IPv4 ingress ACL 'WAN-HARDENED-IN' dropping RFC 1918 traffic (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) and permitting all remaining packets.",
+        cfg1_status: "yanglint: VALID",
+        cfg2_status: "yanglint: INVALID",
+        cfg1_code: JSON.stringify({
+          "openconfig-acl:acl": {
+            "acl-sets": {
+              "acl-set": [
+                {
+                  "name": "WAN-HARDENED-IN",
+                  "type": "openconfig-acl:ACL_IPV4",
+                  "config": {
+                    "name": "WAN-HARDENED-IN",
+                    "type": "openconfig-acl:ACL_IPV4"
+                  },
+                  "acl-entries": {
+                    "acl-entry": [
+                      {
+                        "sequence-id": 10,
+                        "actions": {
+                          "config": {
+                            "forwarding-action": "openconfig-acl:DROP"
+                          }
+                        },
+                        "ipv4": {
+                          "config": {
+                            "source-address": "10.0.0.0/8"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }, null, 2),
+        cfg2_code: JSON.stringify({
+          "openconfig-acl:acl": {
+            "acl-sets": {
+              "acl-set": [
+                {
+                  "name": "WAN-HARDENED-IN",
+                  "config": {
+                    "action": "DENY"
+                  }
+                }
+              ]
+            }
+          }
+        }, null, 2)
+      },
+      {
+        id: "SCENARIO-05",
+        tier: "Complex (LACP/LAG)",
+        schema: "Target: openconfig-interfaces.yang & openconfig-if-aggregate.yang",
+        intent: "Create LACP aggregate Port-Channel20 with min-links 2, LACP interval FAST, and member interfaces GigabitEthernet1/0/1 and 1/0/2.",
+        cfg1_status: "yanglint: VALID",
+        cfg2_status: "yanglint: INVALID",
+        cfg1_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "Port-Channel20",
+                "config": {
+                  "name": "Port-Channel20",
+                  "type": "iana-if-type:ieee8023adLag"
+                },
+                "openconfig-if-aggregate:aggregation": {
+                  "config": {
+                    "lag-type": "LACP",
+                    "min-links": 2
+                  }
+                }
+              },
+              {
+                "name": "GigabitEthernet1/0/1",
+                "openconfig-if-ethernet:ethernet": {
+                  "config": { "aggregate-id": "Port-Channel20" }
+                }
+              },
+              {
+                "name": "GigabitEthernet1/0/2",
+                "openconfig-if-ethernet:ethernet": {
+                  "config": { "aggregate-id": "Port-Channel20" }
+                }
+              }
+            ]
+          }
+        }, null, 2),
+        cfg2_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "Port-Channel20",
+                "lag": {
+                  "mode": "lacp-active",
+                  "ports": ["GigabitEthernet1/0/1", "GigabitEthernet1/0/2"]
+                }
+              }
+            ]
+          }
+        }, null, 2)
+      },
+      {
+        id: "SCENARIO-06",
+        tier: "Complex (L3 Subinterface + VLAN)",
+        schema: "Target: openconfig-interfaces.yang, openconfig-vlan.yang, & openconfig-if-ip.yang",
+        intent: "Configure subinterface GigabitEthernet0/0/3.300 with 802.1Q VLAN tag 300, and assign IPv4 address 10.30.0.1/24.",
+        cfg1_status: "yanglint: VALID",
+        cfg2_status: "yanglint: VALID",
+        cfg1_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "GigabitEthernet0/0/3",
+                "subinterfaces": {
+                  "subinterface": [
+                    {
+                      "index": 300,
+                      "openconfig-vlan:vlan": {
+                        "match": {
+                          "single-tagged": {
+                            "config": { "vlan-id": 300 }
+                          }
+                        }
+                      },
+                      "openconfig-if-ip:ipv4": {
+                        "addresses": {
+                          "address": [
+                            {
+                              "ip": "10.30.0.1",
+                              "config": { "ip": "10.30.0.1", "prefix-length": 24 }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }, null, 2),
+        cfg2_code: JSON.stringify({
+          "openconfig-interfaces:interfaces": {
+            "interface": [
+              {
+                "name": "GigabitEthernet0/0/3",
+                "subinterfaces": {
+                  "subinterface": [
+                    {
+                      "index": 300,
+                      "config": {
+                        "vlan-id": 300,
+                        "ip": "10.30.0.1/24"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }, null, 2)
+      }
+    ];
+
+    function loadExpertCase(idx) {
+      document.querySelectorAll('.case-tab').forEach((btn, i) => {
+        if (i === idx) {
+          btn.className = 'case-tab active px-3 py-1.5 rounded-lg bg-ggu-navy border border-ggu-gold text-white font-bold';
+        } else {
+          btn.className = 'case-tab px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-white';
+        }
+      });
+
+      const c = expertCases[idx];
+      document.getElementById('exp-case-title').innerText = `${c.id} [${c.tier}]`;
+      document.getElementById('exp-case-schema').innerText = c.schema;
+      document.getElementById('exp-case-intent').innerText = `"${c.intent}"`;
+      document.getElementById('exp-cfg1-val').innerText = c.cfg1_status;
+      document.getElementById('exp-cfg2-val').innerText = c.cfg2_status;
+      document.getElementById('exp-cfg1-code').innerText = c.cfg1_code;
+      document.getElementById('exp-cfg2-code').innerText = c.cfg2_code;
+      document.getElementById('unmask-result-alert').classList.add('hidden');
+    }
+
+    function setRating(cfg, crit, score) {
+      // Dummy interactive rating updater
+      console.log(`Config ${cfg}, Criterion ${crit} rated ${score}`);
+    }
+
+    function revealBlindedMapping() {
+      const alertBox = document.getElementById('unmask-result-alert');
+      alertBox.classList.remove('hidden');
+    }
+
+    // Literature Corpus (Appendix A) Data
+    const literatureData = [
+      {
+        authors: "Pang et al. (2020)",
+        theme: "Theme 1",
+        title: "A Survey on Intent-Driven Networks",
+        contribution: "Comprehensive taxonomy of IBN architectures, lifecycle management, intent translation, and network assurance.",
+        limitation: "Does not explore LLMs, schema-aware retrieval, or formal pre-deployment validation.",
+        relevance: "Establishes the conceptual foundation for intent-driven network lifecycle."
+      },
+      {
+        authors: "Jacobs et al. (2018)",
+        theme: "Theme 1",
+        title: "Refining Network Intents for Self-Driving Networks",
+        contribution: "Pioneers intent refinement loops translating high-level business goals to executable operations.",
+        limitation: "Lacks schema-aware validation; relies on high human oversight.",
+        relevance: "Motivates deterministic intent interpretation before synthesis."
+      },
+      {
+        authors: "C. Wang et al. (2024)",
+        theme: "Theme 2",
+        title: "NetConfEval: Can LLMs Facilitate Network Configuration?",
+        contribution: "Establishes seminal benchmark evaluating LLMs on low-level configuration tasks.",
+        limitation: "Demonstrates high hallucination rates and low syntactic correctness without proposing schema mechanisms.",
+        relevance: "Primary diagnostic evidence (RQ1) proving that raw LLMs cannot be trusted."
+      },
+      {
+        authors: "Tu et al. (2024)",
+        theme: "Theme 2",
+        title: "Intent-Based Network Configuration Using LLMs",
+        contribution: "Demonstrates direct natural language intent-to-configuration synthesis using fine-tuned models.",
+        limitation: "Lacks schema-aware retrieval and pre-deployment formal verification.",
+        relevance: "Serves as the primary direct translation comparator baseline for SAVENT."
+      },
+      {
+        authors: "Björklund (2016)",
+        theme: "Theme 3",
+        title: "RFC 7950: The YANG 1.1 Data Modeling Language",
+        contribution: "Defines the standardized hierarchical, constraint-rich data modeling language for NETCONF/RESTCONF.",
+        limitation: "Specification standard only; provides no automated generative AI interface.",
+        relevance: "Core semantic and syntactic foundation of the SAVENT schema grounder."
+      },
+      {
+        authors: "Li et al. (2024)",
+        theme: "Theme 3",
+        title: "PreConfig: Pretrained Model for Network Configuration",
+        contribution: "Introduces pre-trained domain models and intermediate representations for network automation.",
+        limitation: "Does not incorporate explicit hierarchical schema constraints or CUA path pruning.",
+        relevance: "Supports domain-specific representation while motivating SAVENT's YANG-IR."
+      },
+      {
+        authors: "Han et al. (2024)",
+        theme: "Theme 4",
+        title: "Retrieval-Augmented Generation with Graphs (GraphRAG)",
+        contribution: "Introduces graph-enhanced RAG to capture relational dependencies in complex knowledge bases.",
+        limitation: "Generic framework; unvalidated on RFC 7950 YANG models or network configs.",
+        relevance: "Motivates graph-structured schema retrieval to eliminate context bloat."
+      },
+      {
+        authors: "Yang & Wang (2026)",
+        theme: "Theme 4",
+        title: "HiSem-RAG: Hierarchical Semantic-Driven RAG",
+        contribution: "Demonstrates that preserving hierarchical relationships minimizes retrieval context and errors.",
+        limitation: "Evaluated on general documents rather than network data models.",
+        relevance: "Provides structural inspiration for SAVENT's Closest Unique Ancestor (CUA) method."
+      },
+      {
+        authors: "Stettinger et al. (2024)",
+        theme: "Theme 5",
+        title: "Trustworthiness Assurance Assessment for High-Risk AI",
+        contribution: "Proposes multi-attribute framework (accuracy, transparency, governance) for mission-critical AI.",
+        limitation: "Conceptual framework without network-specific configuration validation.",
+        relevance: "Foundational theoretical basis for SAVENT's socio-technical trust profile."
+      },
+      {
+        authors: "Wei et al. (2025)",
+        theme: "Theme 2",
+        title: "INTA: Intent-Based Translation with LLM Agents",
+        contribution: "Introduces multi-agent collaborative LLMs with manual retrieval and syntax checking.",
+        limitation: "Does not exploit compact intermediate representations or CUA path compression.",
+        relevance: "Supports agentic workflows while validating the need for deeper schema grounding."
+      }
+    ];
+
+    function renderLiterature(data) {
+      const tbody = document.getElementById('literature-tbody');
+      tbody.innerHTML = '';
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-800/40 transition';
+        tr.innerHTML = `
+          <td class="p-3 font-semibold text-white">${item.authors}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-ggu-gold border border-slate-700">${item.theme}</span><div class="text-[11px] text-slate-400 mt-1">${item.title}</div></td>
+          <td class="p-3 text-slate-300 leading-normal">${item.contribution}</td>
+          <td class="p-3 text-rose-300/80 leading-normal">${item.limitation}</td>
+          <td class="p-3 text-emerald-300/80 leading-normal">${item.relevance}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterLiterature() {
+      const q = document.getElementById('lit-search-input').value.toLowerCase();
+      const filtered = literatureData.filter(item => 
+        item.authors.toLowerCase().includes(q) ||
+        item.title.toLowerCase().includes(q) ||
+        item.contribution.toLowerCase().includes(q) ||
+        item.limitation.toLowerCase().includes(q) ||
+        item.theme.toLowerCase().includes(q)
+      );
+      renderLiterature(filtered);
+    }
+
+    function filterByTheme(theme) {
+      document.querySelectorAll('.lit-theme-btn').forEach(btn => {
+        btn.classList.remove('bg-ggu-gold', 'text-slate-950', 'font-bold');
+        btn.classList.add('bg-slate-900', 'text-slate-300');
+      });
+      event.target.classList.add('bg-ggu-gold', 'text-slate-950', 'font-bold');
+      event.target.classList.remove('bg-slate-900', 'text-slate-300');
+
+      if (theme === 'all') {
+        renderLiterature(literatureData);
+      } else {
+        const filtered = literatureData.filter(item => item.theme.startsWith(theme));
+        renderLiterature(filtered);
+      }
+    }
+
+    function switchTab(tabId) {
+      // Hide all tab contents
+      const tabs = ['overview', 'architecture', 'simulator', 'traceability', 'metrics', 'experteval', 'literature'];
+      tabs.forEach(id => {
+        const content = document.getElementById(`content-${id}`);
+        const btn = document.getElementById(`tab-${id}`);
+        if (content) {
+          content.classList.add('hidden');
+          content.classList.remove('block');
+        }
+        if (btn) {
+          btn.classList.remove('active', 'bg-slate-800/80', 'text-white', 'border-b-2', 'border-ggu-gold');
+          btn.classList.add('text-slate-300');
+        }
+      });
+
+      // Show active tab content
+      const targetContent = document.getElementById(`content-${tabId}`);
+      const targetBtn = document.getElementById(`tab-${tabId}`);
+      if (targetContent) {
+        targetContent.classList.remove('hidden');
+        targetContent.classList.add('block');
+      }
+      if (targetBtn) {
+        targetBtn.classList.add('active', 'bg-slate-800/80', 'text-white', 'border-b-2', 'border-ggu-gold');
+        targetBtn.classList.remove('text-slate-300');
+      }
+
+      // Re-render KaTeX if available
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body);
+      }
+
+      // Re-initialize Lucide icons in newly rendered sections
+      lucide.createIcons();
+    }
+
+    function loadScenarioDetails() {
+      const selectElem = document.getElementById('sim-scenario-select');
+      if (!selectElem) return;
+      const key = selectElem.value;
+      const data = scenarios[key];
+      if (!data) return;
+
+      // Update scenario metadata headers
+      document.getElementById('sim-scenario-meta').innerText = data.meta;
+      document.getElementById('sim-scenario-tier').innerText = data.tier;
+      document.getElementById('sim-intent-text').innerText = `"${data.intent}"`;
+
+      // Update Baseline condition panels
+      document.getElementById('base-m-rscs').innerText = data.base.rscs;
+      document.getElementById('base-m-svr').innerText = data.base.svr;
+      document.getElementById('base-m-ias').innerText = data.base.ias;
+      document.getElementById('base-m-chr').innerText = data.base.chr;
+      document.getElementById('base-code-output').innerText = data.base.code;
+      document.getElementById('base-diag-box').innerText = data.base.diag;
+      const baseBadge = document.getElementById('baseline-status-badge');
+      if (baseBadge) {
+        baseBadge.className = `text-xs px-2.5 py-1 rounded font-mono ${data.base.statusClass}`;
+        baseBadge.innerText = data.base.status;
+      }
+
+      // Update SAVENT condition panels
+      document.getElementById('savent-m-rscs').innerText = data.savent.rscs;
+      document.getElementById('savent-m-svr').innerText = data.savent.svr;
+      document.getElementById('savent-m-ias').innerText = data.savent.ias;
+      document.getElementById('savent-m-chr').innerText = data.savent.chr;
+      document.getElementById('savent-code-output').innerText = data.savent.code;
+      document.getElementById('savent-diag-box').innerText = data.savent.diag;
+      const saventBadge = document.getElementById('savent-status-badge');
+      if (saventBadge) {
+        saventBadge.className = `text-xs px-2.5 py-1 rounded font-mono ${data.savent.statusClass}`;
+        saventBadge.innerText = data.savent.status;
+      }
+    }
+
+    function runSimulation() {
+      const loadingBar = document.getElementById('sim-loading-bar');
+      const resultsGrid = document.getElementById('sim-results-grid');
+      const runBtn = document.getElementById('btn-run-sim');
+
+      if (loadingBar && resultsGrid && runBtn) {
+        loadingBar.classList.remove('hidden');
+        resultsGrid.classList.add('opacity-50', 'pointer-events-none');
+        runBtn.disabled = true;
+
+        setTimeout(() => {
+          loadingBar.classList.add('hidden');
+          resultsGrid.classList.remove('opacity-50', 'pointer-events-none');
+          runBtn.disabled = false;
+          loadScenarioDetails();
+          lucide.createIcons();
+        }, 650);
+      }
+    }
+
+    function updateTrustProfileCalc() {
+      const svr = parseFloat(document.getElementById('calc-svr-slider').value);
+      const ias = parseFloat(document.getElementById('calc-ias-slider').value);
+      const chr = parseFloat(document.getElementById('calc-chr-slider').value);
+
+      document.getElementById('calc-svr-val').innerText = svr.toFixed(2);
+      document.getElementById('calc-ias-val').innerText = ias.toFixed(2);
+      document.getElementById('calc-chr-val').innerText = chr.toFixed(2);
+
+      const verdictText = document.getElementById('calc-verdict-text');
+      const verdictBox = document.getElementById('calc-verdict-box');
+
+      // Table 10 Compliance Criteria: SVR >= 0.90, IAS >= 0.90, CHR <= 0.05
+      const isCompliant = svr >= 0.90 && ias >= 0.90 && chr <= 0.05;
+
+      if (isCompliant) {
+        verdictText.innerText = "Satisfies Hypotheses H1 & H2b (\u0394 > +0.05 for SVR/IAS, CHR \u2264 0.05)";
+        verdictBox.className = "p-3 rounded-lg bg-slate-900 border border-emerald-500/40 flex items-center justify-between";
+        verdictBox.innerHTML = `
+          <div class="flex items-center space-x-2 text-xs">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+            <span class="text-white font-semibold">Trustworthiness Verdict:</span>
+            <span class="text-emerald-300" id="calc-verdict-text">Satisfies Hypotheses H1 & H2b (\u0394 > +0.05 for SVR/IAS, CHR \u2264 0.05)</span>
+          </div>
+          <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">PASS</span>
+        `;
+      } else {
+        verdictBox.className = "p-3 rounded-lg bg-slate-900 border border-amber-500/40 flex items-center justify-between";
+        verdictBox.innerHTML = `
+          <div class="flex items-center space-x-2 text-xs">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i>
+            <span class="text-white font-semibold">Trustworthiness Verdict:</span>
+            <span class="text-amber-300" id="calc-verdict-text">Sub-threshold: Fails composite materiality criteria (Requires SVR \u2265 0.90, IAS \u2265 0.90, CHR \u2264 0.05)</span>
+          </div>
+          <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">REVIEW REQUIRED</span>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    // Initialize on page load
+    window.onload = function() {
+      renderLiterature(literatureData);
+      loadScenarioDetails();
+      loadExpertCase(0);
+      switchTab('overview');
+    };
+  </script>
+
+</body>
+</html>
