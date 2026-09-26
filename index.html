@@ -1193,12 +1193,12 @@
 
       <!-- Rating Form Table (The 6 Criteria) -->
       <div class="custom-gradient-card rounded-2xl overflow-hidden border border-slate-800">
-        <div class="p-4 bg-slate-900 border-b border-slate-800 flex justify-between items-center">
+        <div class="p-4 bg-slate-900 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <h4 class="text-xs font-bold text-white uppercase tracking-wider">Step 2: 5-Point Likert Quality Assessment</h4>
-          <span class="text-xs text-slate-400">1: Very Low &rarr; 5: Very High</span>
+          <span class="text-xs text-slate-400 font-mono">1: Very Low &rarr; 5: Very High (Swipe table to review)</span>
         </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs">
+        <div class="overflow-x-auto touch-scroll">
+          <table class="w-full text-left text-xs min-w-[620px]">
             <thead class="bg-slate-950 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
               <tr>
                 <th class="p-3 w-1/3">Evaluation Criterion (RQ2)</th>
@@ -1214,21 +1214,21 @@
                   <p class="text-[11px] text-slate-400 mt-0.5">How clearly does the config implement stated intent requirements?</p>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5" id="rating-c1-crit1">
-                    <button onclick="setRating(1, 1, 1)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">1</button>
-                    <button onclick="setRating(1, 1, 2)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">2</button>
-                    <button onclick="setRating(1, 1, 3)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">3</button>
-                    <button onclick="setRating(1, 1, 4)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold">4</button>
-                    <button onclick="setRating(1, 1, 5)" class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold border border-yellow-300">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5" id="rating-c1-crit1">
+                    <button onclick="setRating(1, 1, 1)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold flex items-center justify-center text-xs">1</button>
+                    <button onclick="setRating(1, 1, 2)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold flex items-center justify-center text-xs">2</button>
+                    <button onclick="setRating(1, 1, 3)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold flex items-center justify-center text-xs">3</button>
+                    <button onclick="setRating(1, 1, 4)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-ggu-gold flex items-center justify-center text-xs">4</button>
+                    <button onclick="setRating(1, 1, 5)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-ggu-gold text-slate-950 font-bold border border-yellow-300 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5" id="rating-c2-crit1">
-                    <button onclick="setRating(2, 1, 1)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">1</button>
-                    <button onclick="setRating(2, 1, 2)" class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">2</button>
-                    <button onclick="setRating(2, 1, 3)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">3</button>
-                    <button onclick="setRating(2, 1, 4)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">4</button>
-                    <button onclick="setRating(2, 1, 5)" class="w-7 h-7 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5" id="rating-c2-crit1">
+                    <button onclick="setRating(2, 1, 1)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400 flex items-center justify-center text-xs">1</button>
+                    <button onclick="setRating(2, 1, 2)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold flex items-center justify-center text-xs">2</button>
+                    <button onclick="setRating(2, 1, 3)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400 flex items-center justify-center text-xs">3</button>
+                    <button onclick="setRating(2, 1, 4)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400 flex items-center justify-center text-xs">4</button>
+                    <button onclick="setRating(2, 1, 5)" class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 hover:border-cyan-400 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
               </tr>
@@ -1240,21 +1240,21 @@
                   <p class="text-[11px] text-slate-400 mt-0.5">How technically plausible is the config for enterprise network hardware?</p>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-ggu-gold text-slate-950 font-bold flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
               </tr>
@@ -1266,21 +1266,21 @@
                   <p class="text-[11px] text-slate-400 mt-0.5">Can the relationship between intent, config, and schema be traced?</p>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">4</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-ggu-gold text-slate-950 font-bold flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
-                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
               </tr>
@@ -1292,21 +1292,21 @@
                   <p class="text-[11px] text-slate-400 mt-0.5">Trustworthiness as an input to a controlled enterprise network change review?</p>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-ggu-gold text-slate-950 font-bold flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
               </tr>
@@ -1318,21 +1318,21 @@
                   <p class="text-[11px] text-slate-400 mt-0.5">Suitability for lab validation, staging, or HITL review before deployment?</p>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-ggu-gold text-slate-950 font-bold flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
-                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
               </tr>
@@ -1344,21 +1344,21 @@
                   <p class="text-[11px] text-slate-400 mt-0.5">Overall quality assessment for controlled enterprise deployment.</p>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-ggu-gold text-slate-950 font-bold">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-ggu-gold text-slate-950 font-bold flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
                 <td class="p-3 text-center">
-                  <div class="flex justify-center gap-1.5">
-                    <button class="w-7 h-7 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold">1</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">2</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">3</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">4</button>
-                    <button class="w-7 h-7 rounded bg-slate-900 border border-slate-700">5</button>
+                  <div class="flex justify-center gap-1 sm:gap-1.5">
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-cyan-500/40 text-cyan-200 border border-cyan-400 font-bold flex items-center justify-center text-xs">1</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">2</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">3</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">4</button>
+                    <button class="w-7 h-7 sm:w-8 sm:h-8 rounded bg-slate-900 border border-slate-700 flex items-center justify-center text-xs">5</button>
                   </div>
                 </td>
               </tr>
